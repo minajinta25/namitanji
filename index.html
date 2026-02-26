@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nami Tanji — Animation Artist</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Zen+Maru+Gothic:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffff;--red:#e03030;--blue:#2255cc;--green:#3a9e5f;--gray:#888;--gray-light:#f2f2f2;--gray-mid:#ccc;--text:#222;--text-light:#888;--radius:999px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Zen Maru Gothic',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+
+.cursor{width:12px;height:12px;background:var(--red);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;}
+.cursor-ring{width:36px;height:36px;border:1.5px solid var(--blue);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.4;mix-blend-mode:multiply;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:22px 48px;transition:background .3s,border-color .3s;border-bottom:1px solid transparent;}
+nav.scrolled{background:rgba(255,255,255,.92);border-color:var(--gray-mid);backdrop-filter:blur(12px);}
+
+.nav-logo{height:52px;display:flex;align-items:center;}
+.nav-logo img{height:100%;width:auto;display:block;}
+.nav-logo .logo-fallback{font-family:'Caveat',cursive;font-size:22px;font-weight:700;color:var(--text);letter-spacing:1px;display:none;}
+.nav-logo .logo-fallback span{color:var(--red);}
+.nav-logo .logo-img-broken{display:none;}
+.nav-logo .logo-img-broken + .logo-fallback{display:block;}
+
+.nav-links{display:flex;gap:8px;list-style:none;}
+.nav-links a{display:inline-block;padding:8px 22px;border-radius:var(--radius);border:1.5px solid var(--gray-mid);color:var(--gray);text-decoration:none;font-size:11px;font-family:'Space Mono',monospace;letter-spacing:1px;transition:all .2s;cursor:none;}
+.nav-links a:hover{border-color:var(--blue);color:var(--blue);background:rgba(34,85,204,.05);}
+
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:120px 48px 80px;position:relative;overflow:hidden;}
+50%{transform:translateY(-16px) rotate(8deg);}}
+
+.hero-gif-wrap{width:min(760px,92vw);margin-bottom:32px;opacity:0;animation:popIn .7s cubic-bezier(.34,1.56,.64,1) .3s forwards;}
+.hero-gif-wrap img{width:100%;height:auto;display:block;}
+.hero-gif-placeholder{width:100%;height:240px;background:var(--gray-light);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--gray);flex-direction:column;gap:8px;}
+.hero-gif-placeholder .ph-note{font-size:9px;color:var(--gray-mid);}
+
+.hero-title-img{display:block;max-width:440px;width:80%;height:auto;margin:0 auto 20px;opacity:0;animation:fadeUp .6s ease .65s forwards;}
+.hero-title-fallback{font-family:'Caveat',cursive;font-size:clamp(48px,9vw,100px);font-weight:700;line-height:1;letter-spacing:2px;margin-bottom:20px;display:none;}
+.hero-title-fallback .red{color:var(--red);}
+.hero-title-fallback .blue{color:var(--blue);}
+
+.hero-tag{display:inline-block;padding:4px 0;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--green);margin-bottom:20px;opacity:0;animation:fadeUp .6s ease .5s forwards;}
+.hero-sns{display:flex;gap:10px;justify-content:center;margin-bottom:20px;opacity:0;animation:fadeUp .6s ease .75s forwards;}
+.hero-sns-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--gray-mid);display:flex;align-items:center;justify-content:center;color:var(--gray);text-decoration:none;transition:all .2s;cursor:none;}
+.hero-sns-btn:hover{border-color:var(--text);color:var(--text);transform:scale(1.1);}
+.hero-desc{max-width:420px;font-size:15px;line-height:2;color:var(--text-light);margin-bottom:40px;opacity:0;animation:fadeUp .6s ease .9s forwards;}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .6s ease .95s forwards;}
+.btn{display:inline-block;padding:14px 36px;border-radius:var(--radius);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-decoration:none;cursor:none;transition:transform .15s,box-shadow .15s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1);}
+.btn-red{background:var(--red);color:#fff;}
+.btn-blue-outline{background:#fff;color:var(--blue);border:1.5px solid var(--blue);}
+
+@keyframes popIn{from{opacity:0;transform:scale(.8) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+
+/* ── About ── */
+#about{ background:#fff; }
+.about-grid{
+  display:grid;
+  grid-template-columns:220px 1fr 1fr;
+  gap:48px;
+  align-items:start;
+}
+.about-profile-img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:16px;
+  display:block;
+}
+.about-bio{
+  font-size:14px;
+  line-height:2.1;
+  color:var(--text);
+}
+.about-history{ }
+.about-history-title{
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:20px;
+}
+.history-item{
+  display:grid;
+  grid-template-columns:56px 1fr;
+  gap:16px;
+  padding:12px 0;
+  border-bottom:1px solid var(--gray-light);
+  font-size:13px;
+  line-height:1.7;
+}
+.history-item:last-child{ border-bottom:none; }
+.history-year{
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  color:var(--blue);
+  padding-top:1px;
+}
+@media(max-width:768px){
+  .about-grid{ grid-template-columns:1fr; gap:32px; }
+  .about-profile-img{ max-width:200px; margin:0 auto; }
+}
+section{padding:100px 48px;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-header{margin-bottom:52px;}
+.section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
+
+.section-title-img{display:block;height:56px;width:auto;max-width:100%;}
+.section-title-fallback{font-family:'Caveat',cursive;font-size:clamp(38px,5vw,64px);font-weight:700;line-height:1;display:none;}
+.title-img-hidden{display:none;}
+.title-img-hidden + .section-title-fallback{display:block;}
+
+.r{color:var(--red);}
+.b{color:var(--blue);}
+
+#works{background:var(--gray-light);}
+
+/* 均等グリッド：1行に最大4列、各セルを同じ大きさの丸で */
+.works-grid-uniform{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:48px 32px;
+  padding:8px 0 40px;
+}
+@media(max-width:900px){.works-grid-uniform{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.works-grid-uniform{grid-template-columns:repeat(2,1fr);gap:32px 20px;}}
+
+.work-bubble{
+  cursor:none;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  transition:transform .3s cubic-bezier(.34,1.4,.64,1);
+}
+.work-bubble:hover{transform:translateY(-6px) scale(1.04);}
+.work-bubble:hover .bubble-circle{box-shadow:0 20px 48px rgba(0,0,0,.16);}
+
+/* 丸は aspect-ratio で常に正円、幅は親グリッドに追従 */
+.bubble-circle{
+  width:100%;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  overflow:hidden;
+  transition:box-shadow .3s;
+  box-shadow:0 6px 20px rgba(0,0,0,.1);
+  background:#e8e8e8;
+  flex-shrink:0;
+}
+/* GIF・画像 — object-fitでトリミングせず全体を見せる */
+.bubble-circle img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;pointer-events:none;
+}
+
+.bubble-label{
+  display:block;
+  text-align:center;
+  line-height:1.5;
+  width:100%;
+  order:-1;
+  margin-bottom:8px;
+}
+.bubble-label-ja{
+  font-family:'Zen Maru Gothic',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  color:var(--blue);
+  display:block;
+}
+.bubble-label-en{
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  color:var(--gray);
+  letter-spacing:.5px;
+  display:block;
+  margin-top:2px;
+}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(10px);padding:20px;}
+.modal-overlay.active{opacity:1;pointer-events:all;}
+.modal{max-width:680px;width:100%;background:#fff;border-radius:24px;overflow:hidden;transform:scale(.94) translateY(16px);transition:transform .3s cubic-bezier(.34,1.2,.64,1);border:1.5px solid var(--gray-mid);max-height:92vh;overflow-y:auto;}
+.modal-overlay.active .modal{transform:scale(1) translateY(0);}
+
+
+/* ── SHOP バナー ── */
+.shop-banner{
+  display:block;
+  width:100%;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  cursor:none;
+}
+.shop-banner-img{
+  width:100%;
+  height:320px;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  transition:transform .4s ease, filter .4s ease;
+  filter:brightness(1);
+}
+.shop-banner:hover .shop-banner-img{
+  transform:scale(1.03);
+  filter:brightness(.85);
+}
+.shop-banner-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  flex-direction:column;
+  background:rgba(0,0,0,.15);
+  transition:background .3s;
+}
+.shop-banner:hover .shop-banner-overlay{ background:rgba(0,0,0,.3); }
+.shop-label{
+  font-family:'Caveat',cursive;
+  font-size:80px;
+  font-weight:700;
+  color:#fff;
+  line-height:1;
+  text-shadow:0 2px 12px rgba(0,0,0,.3);
+}
+.shop-tag{
+  background:rgba(0,0,0,.80);
+  color:#ffffff !important;
+  font-size:13px;
+  font-weight:300;
+  letter-spacing:2px;
+  padding:10px 28px;
+  border-radius:6px;
+}
+.shop-arrow{
+  font-family:'Space Mono',monospace;
+  font-size:13px;
+  letter-spacing:3px;
+  color:#fff;
+  padding:14px 40px;
+  border-radius:4px;
+  background:rgba(0,0,0,.75);
+  border:1px solid rgba(255,255,255,.15);
+  transition:letter-spacing .25s, background .25s;
+}
+.shop-banner:hover .shop-arrow{
+  letter-spacing:6px;
+  background:rgba(0,0,0,.9);
+}
+@media(max-width:600px){
+  .shop-banner-img{height:220px;}
+  .shop-label{font-size:56px;}
+}
+
+
+/* ── 縦画像グリッドレイアウト ── */
+.modal-media-list.portrait-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4px;
+}
+.modal-media-list.portrait-grid .modal-media-item{
+  aspect-ratio:auto;
+  position:relative;
+  overflow:hidden;
+  background:#f8f8f8;
+}
+.modal-media-list.portrait-grid .modal-media-item img{
+  position:static;
+  width:100%;
+  height:auto;
+  object-fit:unset;
+}
+.modal-media-list.portrait-grid .modal-media-item:first-child{
+  grid-column:1 / -1;  /* 1枚目は横幅いっぱい */
+}
+/* ── 縦並びメディアリスト（16:9固定） ── */
+.modal-media-list{display:flex;flex-direction:column;gap:0;}
+
+/* 16:9 ラッパー */
+.modal-media-item{position:relative;width:100%;aspect-ratio:16/9;background:#111;overflow:hidden;}
+.modal-media-item + .modal-media-item{border-top:3px solid #fff;}
+
+.modal-media-item img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:contain;
+  background:#f4f4f4;
+  display:block;
+}
+.modal-media-item video{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:contain;
+  background:#000;
+  display:block;
+  outline:none;
+}
+
+/* ── モーダル本文（コンパクト） ── */
+.modal-body{padding:18px 24px 24px;}
+.modal-header-row{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+.modal-cat{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green);}
+.modal-title{font-size:18px;font-weight:700;line-height:1.4;}
+.modal-title-ja{font-family:'Zen Maru Gothic',sans-serif;display:block;color:var(--text);}
+.modal-title-en{font-family:'Space Mono',monospace;font-size:12px;font-weight:400;color:var(--gray);display:block;margin-top:2px;letter-spacing:.5px;}
+.modal-year-inline{font-family:'Space Mono',monospace;font-size:10px;color:var(--green);margin-left:auto;}
+.modal-desc{font-size:13px;line-height:1.8;color:var(--text-light);margin-bottom:16px;}
+.modal-desc p{margin-bottom:1em;}
+.modal-desc p:last-child{margin-bottom:0;}
+.modal-credit{margin-top:16px;padding-top:14px;border-top:1px solid var(--gray-light);display:flex;flex-direction:column;gap:6px;}
+.modal-credit-row{display:flex;align-items:baseline;gap:10px;font-size:12px;line-height:1.6;}
+.credit-role{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:#fff;background:var(--blue);padding:2px 8px;border-radius:4px;flex-shrink:0;white-space:nowrap;}
+.credit-name{color:var(--text);font-size:12px;}
+
+.modal-awards{margin-bottom:16px;}
+.modal-awards-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.award-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text);line-height:1.7;padding:5px 0;border-bottom:1px solid var(--gray-light);}
+.award-item:last-child{border-bottom:none;}
+.award-star{color:var(--red);font-size:12px;flex-shrink:0;margin-top:2px;}
+
+.modal-foot{display:flex;justify-content:flex-end;margin-top:12px;}
+.modal-close-btn{padding:9px 24px;border-radius:var(--radius);background:var(--gray-light);color:var(--gray);border:1px solid var(--gray-mid);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;cursor:none;transition:background .2s;}
+.modal-close-btn:hover{background:var(--gray-mid);}
+
+
+/* ── ニュースポップアップ ── */
+.news-item{cursor:none;transition:background .15s;}
+.news-item:hover{background:rgba(34,85,204,.04);}
+
+.news-modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);
+  z-index:300;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s;
+  backdrop-filter:blur(8px);
+}
+.news-modal-overlay.active{opacity:1;pointer-events:all;}
+.news-modal{
+  max-width:520px;width:100%;
+  background:#fff;
+  border-radius:20px;
+  padding:36px 36px 32px;
+  border:1.5px solid var(--gray-mid);
+  transform:scale(.95) translateY(12px);
+  transition:transform .25s cubic-bezier(.34,1.2,.64,1);
+  position:relative;
+}
+.news-modal-overlay.active .news-modal{transform:scale(1) translateY(0);}
+
+.news-modal-date{
+  font-family:'Space Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  color:var(--text-light);margin-bottom:10px;
+}
+.news-modal-badge{
+  display:inline-block;
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:2px;
+  padding:4px 12px;border-radius:var(--radius);
+  border:1.5px solid;margin-bottom:16px;
+}
+.news-modal-title{
+  font-size:16px;font-weight:700;
+  line-height:1.6;margin-bottom:16px;
+  color:var(--text);
+}
+.news-modal-body{
+  font-size:14px;line-height:2;
+  color:var(--text-light);
+  margin-bottom:24px;
+  white-space:pre-wrap;
+}
+.news-modal-close{
+  display:block;margin-left:auto;
+  padding:9px 24px;border-radius:var(--radius);
+  background:var(--gray-light);color:var(--gray);
+  border:1px solid var(--gray-mid);
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;
+  cursor:none;transition:background .2s;
+}
+.news-modal-close:hover{background:var(--gray-mid);}
+
+#news{background:#fff;}
+.news-list{border-top:1px solid var(--gray-light);}
+.news-item{display:flex;align-items:flex-start;gap:28px;padding:24px 0;border-bottom:1px solid var(--gray-light);}
+.news-date{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-light);white-space:nowrap;min-width:96px;margin-top:2px;}
+.news-text{font-size:14px;line-height:1.8;flex:1;}
+.news-badge{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;padding:5px 14px;border-radius:var(--radius);white-space:nowrap;border:1.5px solid;}
+.badge-new{border-color:var(--red);color:var(--red);}
+.badge-event{border-color:var(--blue);color:var(--blue);}
+.badge-info{border-color:var(--green);color:var(--green);}
+
+#contact{background:var(--gray-light);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.contact-narrow{max-width:560px !important;}
+.contact-intro{font-size:14px;line-height:2;color:var(--text-light);margin-bottom:36px;}
+
+
+.contact-form{display:flex;flex-direction:column;gap:12px;}
+.contact-form input,.contact-form textarea{background:#fff;border:1.5px solid var(--gray-mid);border-radius:14px;color:var(--text);padding:14px 20px;font-family:'Zen Maru Gothic',sans-serif;font-size:14px;font-weight:300;outline:none;transition:border-color .2s;resize:none;}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--blue);}
+.contact-form textarea{height:130px;}
+.btn-send{align-self:flex-start;padding:14px 40px;border-radius:var(--radius);background:var(--red);color:#fff;border:none;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;cursor:none;transition:background .2s,transform .15s;}
+.btn-send:hover{background:var(--green);transform:translateY(-2px);}
+
+footer{padding:32px 48px;border-top:1px solid var(--gray-light);display:flex;justify-content:space-between;align-items:center;}
+.footer-logo{height:28px;display:flex;align-items:center;}
+.footer-logo img{height:100%;width:auto;}
+.footer-logo .logo-fallback{font-family:'Caveat',cursive;font-size:18px;font-weight:700;display:none;}
+.footer-logo .logo-fallback span{color:var(--red);}
+.footer-logo .logo-img-broken{display:none;}
+.footer-logo .logo-img-broken + .logo-fallback{display:block;}
+.footer-copy{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-light);letter-spacing:1px;}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+
+
+
+@media(max-width:768px){
+  .cursor,.cursor-ring{display:none;}
+  body,a,button,.work-bubble,.news-item,.shop-banner,.modal-close-btn,.btn-send,.hero-sns-btn,.nav-links a,.mobile-menu a{cursor:auto;}
+  button{cursor:pointer;}
+  a{cursor:pointer;}
+}
+
+/* ── ハンバーガーメニュー ── */
+.nav-hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;align-items:center;
+  gap:5px;width:40px;height:40px;
+  background:none;border:none;cursor:none;padding:4px;z-index:110;
+}
+.nav-hamburger span{
+  display:block;width:22px;height:1.5px;
+  background:var(--text);
+  transition:transform .3s,opacity .3s;
+  transform-origin:center;
+}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+.mobile-menu{
+  position:fixed;inset:0;top:0;
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(12px);
+  z-index:105;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:10px;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s;
+}
+.mobile-menu.open{opacity:1;pointer-events:all;}
+.mobile-menu a{
+  font-family:'Space Mono',monospace;
+  font-size:12px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--text);text-decoration:none;
+  padding:14px 0;width:160px;text-align:center;
+  border-bottom:1px solid var(--gray-light);
+  transition:color .2s;cursor:none;
+}
+.mobile-menu a:last-child{border-bottom:none;}
+.mobile-menu a:hover{color:var(--red);}
+
+@media(max-width:768px){
+  .nav-hamburger{display:flex;}
+  .nav-links{display:none !important;}
+}
+@media(max-width:768px){
+  nav{padding:18px 24px;}
+  section{padding:72px 24px;}
+  #hero{padding:100px 24px 72px;}
+  .contact-grid{grid-template-columns:1fr;gap:48px;}
+  .news-item{flex-direction:column;gap:8px;}
+  footer{flex-direction:column;gap:12px;text-align:center;}
+  .works-bubbles{gap:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">
+    <!--
+      【手書きロゴ画像の設定方法】
+      img/logo-handwritten.png を自分の手書き画像ファイルに差し替えてください。
+      画像が見つからない場合は自動でテキストに切り替わります。
+    -->
+    <img
+      src="img/logo-handwritten.png"
+      alt="Nami Tanji"
+      onerror="this.className='logo-img-broken'"
+    >
+    <span class="logo-fallback">Nami <span>Tanji</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="menuJump('#about')">About</a>
+  <a onclick="menuJump('#works')">Works</a>
+  <a onclick="menuJump('#shop')">Shop</a>
+  <a onclick="menuJump('#news')">News</a>
+  <a onclick="menuJump('#contact')">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+
+  <!--
+    【透過GIFの設定方法】
+    img/hero.webp を自分のアニメWebPに差し替えてください。
+    四角形・枠線なし・幅400px（レスポンシブ）
+    画像が見つからない場合はプレースホルダーが表示されます。
+  -->
+  <div class="hero-gif-wrap">
+    <img
+      src="img/hero.webp"
+      alt="Nami Tanji"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+    >
+    <div class="hero-gif-placeholder" style="display:none;">
+      <span>透過GIFをここに配置</span>
+      <span class="ph-note">img/hero.webp を差し替えてください</span>
+    </div>
+  </div>
+
+  <!--
+    【手書き名前画像の設定方法】
+    img/title-name.png を自分の手書き「Nami Tanji」画像に差し替えてください。
+    画像が見つからない場合はテキストに自動切り替えします。
+  -->
+  <img
+    class="hero-title-img"
+    src="img/title-name.png"
+    alt="Nami Tanji"
+    onerror="this.style.display='none';document.getElementById('heroTitleFallback').style.cssText='display:block;opacity:0;animation:fadeUp .6s ease 0s forwards';"
+  >
+  <h1 class="hero-title-fallback" id="heroTitleFallback">
+    <span class="red">Nami</span> <span class="blue">Tanji</span>
+  </h1>
+
+  <div class="hero-tag">Animation Artist · Illustrator</div>
+
+  <!-- SNS 丸アイコン — href を実際のURLに変更してください -->
+  <div class="hero-sns">
+    <a href="https://twitter.com/tanjinaoil" target="_blank" class="hero-sns-btn" title="@tanjinaoil">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://instagram.com/tanji_oekk" target="_blank" class="hero-sns-btn" title="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+  </div>
+
+
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">Profile</div>
+      <div class="section-title-fallback" style="display:block;">About<span class="r">.</span></div>
+    </div>
+    <div class="about-grid">
+      <img src="img/profile.jpg" alt="Nami Tanji" class="about-profile-img reveal">
+      <p class="about-bio reveal">
+        2000年生まれ。多摩美術大学油画専攻卒業。2026年東京藝術大学大学院映像研究科アニメーション専攻修了。絵画的下地から生まれるビビッドな色彩と、ナンセンスな展開の噛み合いを常に追究している。iPadでの「あそべるアニメーション」や、ループアニメーション展示など、人が気楽にアートに触れるための独自の発表スタイルを模索し、メディアを問わず活動している。
+      </p>
+      <div class="about-history reveal">
+        <div class="about-history-title">Awards &amp; Activities</div>
+        <div class="history-item">
+          <span class="history-year">2023</span>
+          <span>IAG 2023 奨励賞</span>
+        </div>
+        <div class="history-item">
+          <span class="history-year">2024</span>
+          <span>個展「なんにも　ない日に　みた夢」／銀座 Gallery b.Tokyo</span>
+        </div>
+        <div class="history-item">
+          <span class="history-year">2025</span>
+          <span>第12回新千歳空港国際アニメーション映画祭　NEW CHITOSE 30 seconds 部門　グランプリ</span>
+        </div>
+        <div class="history-item">
+          <span class="history-year">2025</span>
+          <span>アジアデジタルアート大賞展FUKUOKA　学生エンターテインメント部門　大賞</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">Portfolio</div>
+      <!--
+        【手書き "Works" 画像の設定方法】
+        img/title-works.png を差し替えてください。
+      -->
+      <img
+        class="section-title-img"
+        src="img/title-works.png"
+        alt="Works"
+        onerror="this.className='section-title-img title-img-hidden'"
+      >
+      <div class="section-title-fallback">Works<span class="r">.</span></div>
+    </div>
+    <div class="works-grid-uniform reveal" id="worksBubbles"></div>
+  </div>
+</section>
+
+
+<!-- SHOP -->
+<section id="shop" style="padding:0;">
+  <!--
+    BASEのURL: href の "https://yourshop.base.shop" を
+    自分のBASEショップURLに変更してください。
+  -->
+  <!--
+    BASEのURL: href の "https://yourshop.base.shop" を自分のURLに変更してください
+  -->
+  <a href="https://namitanji.base.shop" target="_blank" class="shop-banner">
+    <img src="img/shop-banner.jpg" alt="SHOP" class="shop-banner-img">
+    <div class="shop-banner-overlay">
+      <div class="shop-label">SHOP</div>
+      <div class="shop-tag">グッズ・原画等販売中</div>
+      <div class="shop-arrow">→ BASE で見る</div>
+    </div>
+  </a>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">Updates</div>
+      <!--
+        【手書き "News" 画像の設定方法】
+        img/title-news.png を差し替えてください。
+      -->
+      <img
+        class="section-title-img"
+        src="img/title-news.png"
+        alt="News"
+        onerror="this.className='section-title-img title-img-hidden'"
+      >
+      <div class="section-title-fallback">News<span class="b">.</span></div>
+    </div>
+    <!--
+      ニュースの詳細文は data-detail="..." に記入してください。
+      改行は &#10; で表現できます。
+    -->
+    <div class="news-list reveal">
+      <div class="news-item" onclick="openNewsModal(this)">
+        <div class="news-date">2026.02.26</div>
+        <div class="news-text">サイトを公開しました。</div>
+        <div class="news-badge badge-new">NEW</div>
+        <div class="news-detail" hidden>サイトを公開しました。</div>
+      </div>
+      <div class="news-item" onclick="openNewsModal(this)">
+        <div class="news-date">2026.02.26</div>
+        <div class="news-text">藝大アニメーション専攻修了展・ゲームコース展のお知らせ</div>
+        <div class="news-badge badge-event">EVENT</div>
+        <div class="news-detail" hidden>所属する東京藝術大学大学院映像研究科のアニメーション専攻17期修了展"wander"・ゲームコース展07に修了制作「ながされるひとびと」、1年次制作「はいいろをつくろう」の展示で参加します。&#10;&#10;また、両展示のメインビジュアルを書き下ろさせていただいています。&#10;&#10;<strong>アニメーション修了展　横浜会場</strong>&#10;2026 2/27(金)〜3/1(日)&#10;東京藝術大学　横浜キャンパス　馬車道校舎&#10;&#10;<strong>アニメーション修了展　東京会場＋ゲームコース展07</strong>&#10;2026 3/20(金)〜22(土)&#10;東京藝術大学　上野キャンパス&#10;&#10;詳細は以下のサイトをご覧ください。&#10;アニメーション修了展：<a href="https://animation.geidai.ac.jp/17wander/" target="_blank" style="color:var(--blue);">animation.geidai.ac.jp/17wander/</a>&#10;ゲームコース展：<a href="https://games.geidai.ac.jp/07/" target="_blank" style="color:var(--blue);">games.geidai.ac.jp/07/</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner contact-narrow">
+    <div class="section-header reveal">
+      <div class="section-label">Get in touch</div>
+      <img
+        class="section-title-img"
+        src="img/title-contact.png"
+        alt="Contact"
+        onerror="this.className='section-title-img title-img-hidden'"
+      >
+      <div class="section-title-fallback">Contact<span class="r">.</span></div>
+    </div>
+    <p class="contact-intro reveal">お仕事のご依頼・コラボレーション・取材など、<br>お気軽にご連絡ください。</p>
+    <form class="contact-form reveal" action="https://formspree.io/f/xwkgpqrv" method="POST" onsubmit="handleSubmit(event)">
+      <input type="text" placeholder="お名前" required>
+      <input type="email" placeholder="メールアドレス" required>
+      <input type="text" placeholder="件名">
+      <textarea placeholder="メッセージ"></textarea>
+      <button type="submit" class="btn-send">SEND →</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <img
+      src="img/logo-handwritten.png"
+      alt="Nami Tanji"
+      onerror="this.className='logo-img-broken'"
+    >
+    <span class="logo-fallback">Nami <span>Tanji</span></span>
+  </div>
+  <div class="footer-copy">© 2025 Nami Tanji. All rights reserved.</div>
+</footer>
+
+
+<!-- NEWS MODAL -->
+<div class="news-modal-overlay" id="newsModalOverlay" onclick="closeNewsModal(event)">
+  <div class="news-modal">
+    <div class="news-modal-date"  id="newsModalDate"></div>
+    <div class="news-modal-badge" id="newsModalBadge"></div>
+    <div class="news-modal-title" id="newsModalTitle"></div>
+    <div class="news-modal-body"  id="newsModalBody"></div>
+    <button class="news-modal-close" onclick="closeNewsModal()">閉じる</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <!-- 縦並びメディアリスト（16:9） -->
+    <div class="modal-media-list" id="modalMediaList"></div>
+    <!-- 本文（コンパクト） -->
+    <div class="modal-body">
+      <div class="modal-header-row">
+        <span class="modal-cat" id="modalCat"></span>
+        <span class="modal-title" id="modalTitle"></span>
+        <span class="modal-year-inline" id="modalYear"></span>
+      </div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-awards" id="modalAwards"></div>
+      <div class="modal-foot">
+        <button class="modal-close-btn" onclick="closeModal()">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Cursor
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function a(){cursor.style.left=mx+'px';cursor.style.top=my+'px';rx+=(mx-rx)*.2;ry+=(my-ry)*.2;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+
+// Nav
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
+
+// Reveal
+const obs=new IntersectionObserver(entries=>{let d=0;entries.forEach(e=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),d);d+=80;}});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/*
+  ══════════════════════════════════════════════════════
+  WORKS DATA — ここを編集してください
+  ══════════════════════════════════════════════════════
+  ・src    : 丸アイコン用 GIF / 画像（例: 'img/works/work01.gif'）
+
+  ・media  : ポップアップのスライダーに表示するメディアリスト
+             画像（GIF含む）と動画を自由に混在できます。
+
+             画像の場合:
+               { type: 'image', src: 'ファイルパス' }
+
+             動画の場合（mp4 / webm）:
+               { type: 'video', src: 'ファイルパス', poster: 'サムネ画像（省略可）' }
+
+             ※ media を省略すると src を1枚だけ表示します。
+
+  ・awards : 受賞歴の配列（なければ [] ）
+  ══════════════════════════════════════════════════════
+*/
+const works = [
+  {
+    title: 'ながされるひとびと',
+    subtitle: 'Flushed',
+    cat: 'Interactive Work',
+    year: '2026',
+    src: 'img/works/work01-icon.gif',
+    desc: `お風呂に入っていただけなのに、押し流されるひとりのひと。個性的な「ひとびと」とふれあい、水辺にたどり着いては押し流され、ひたすら流されていく先になにがあるのでしょうか。<br><br>タップ、そして実際にiPadを回転させて「水を流す」ことにより進行するインタラクティブアニメーション作品です。<br><br><em>Someone casually taking a bath… and then flushed away. More come along. Wherever they go, there's always water. And then… flush. What awaits after all this flushing?<br><br>An interactive animated work that progresses by tapping and physically rotating the iPad to "flow the water."</em><div class="modal-credit"><div class="modal-credit-row"><span class="credit-role">Play time</span><span class="credit-name">~5:00</span></div><div class="modal-credit-row"><span class="credit-role">Developer</span><span class="credit-name">石田滉人　Hiroto Ishida</span></div><div class="modal-credit-row"><span class="credit-role">Music</span><span class="credit-name">島津優理　Yuri Shimazu</span></div><div class="modal-credit-row"><span class="credit-role">Sound Design</span><span class="credit-name">翁長果生　Kai Onaga</span></div></div>`,
+    awards: [],
+    media: [
+      { type: 'youtube', src: 'https://youtu.be/idpTzyznkfE', label: 'YouTubeでトレーラーを見る' },
+      { type: 'image', src: 'img/works/work01-5.jpg' },
+      { type: 'image', src: 'img/works/work01-1.jpg' },
+      { type: 'image', src: 'img/works/work01-2.jpg' },
+      { type: 'image', src: 'img/works/work01-3.jpg' },
+      { type: 'image', src: 'img/works/work01-4.jpg' },
+    ]
+  },
+  {
+    title: 'はいいろをつくろう',
+    subtitle: "Let's Make Gray",
+    cat: 'Interactive Work',
+    year: '2025',
+    src: 'img/works/work02-icon.gif',
+    desc: `iPadに現れるカラフルなアイコンをタップすることで、愉快なアニメーション・ミニゲームたちを遊ぶことができる作品です。肉を焼いたり、犬を触ったり、脈略のない小さな絵の気になるところを触って「クリア」すると、それぞれのミニゲームから「色」を集めることができます。集めた色を混ぜ合わせ、「はいいろ」をつくることを目指してみましょう。ちょっとした笑いと、気楽な雰囲気が魅力です。<br><br><em>Tap on colorful icons to play fun, animated mini-games. Collect colors as you complete each game and mix them to create gray. The scenes are light-hearted and random, like grilling meat or petting a dog. Enjoy the quirkiness.</em><div class="modal-credit"><div class="modal-credit-row"><span class="credit-role">Play time</span><span class="credit-name">~5:00</span></div><div class="modal-credit-row"><span class="credit-role">Developer</span><span class="credit-name">石田滉人　Hiroto Ishida</span></div><div class="modal-credit-row"><span class="credit-role">Music</span><span class="credit-name">島津優理　Yuri Shimazu</span></div><div class="modal-credit-row"><span class="credit-role">Sound Design</span><span class="credit-name">俵積田菜央　Nao Tawaratsumida　／　翁長果生　Kai Onaga　／　山科彩香　Sayaka Yamashina</span></div></div>`,
+    awards: ['アジアデジタルアート大賞展FUKUOKA　学生エンターテインメント部門　大賞'],
+    media: [
+      { type: 'youtube', src: 'https://youtu.be/orRmgq5giMU', label: 'YouTubeでトレーラーを見る' },
+      { type: 'image', src: 'img/works/work02-1.jpg' },
+    ]
+  },
+  {
+    title: 'キューブすいそうのキミ',
+    subtitle: 'You, in the Cube Aquarium',
+    cat: 'Loop Animation',
+    year: '2025',
+    src: 'img/works/work03-icon.gif',
+    desc: `むかし、ひとりぐらしの部屋に25センチのキューブ水槽を購入し、一匹のサカナを飼っていました。小さい水槽のへりをひたすら上下したり、飛び出したりするやんちゃな彼を見ながら、自分が水槽で暮らしたらとんでもなく滑稽だろうなあ、と思っていました。<div class="modal-credit"><div class="modal-credit-row"><span class="credit-role">Duration</span><span class="credit-name">0:30</span></div></div>`,
+    awards: ['第12回新千歳空港国際アニメーション映画祭　NEW CHITOSE 30 seconds 部門　グランプリ'],
+    media: [
+      { type: 'image', src: 'img/works/work03-1.jpg' },
+      { type: 'youtube', src: 'https://youtube.com/shorts/6kPm64XsV-I?feature=share' },
+    ]
+  },
+  {
+    title: 'ひとびと',
+    subtitle: 'HITOBITO',
+    cat: 'Illustration Book',
+    year: '2025',
+    src: 'img/works/work04-1.jpg',
+    desc: `日常のなかで得る着想をもとに制作した、イラストレーションの連作フルカラーZINEです。<br>ショップでお買い求めいただけます。　<a href="https://namitanji.base.shop" target="_blank" style="color:var(--blue);">namitanji.base.shop</a><div class="modal-credit"><div class="modal-credit-row"><span class="credit-role">Format</span><span class="credit-name">A5 フルカラー 24P</span></div></div>`,
+    awards: [],
+    portraitGrid: true,
+    media: [
+      { type: 'image', src: 'img/works/work04-1.jpg' },
+      { type: 'image', src: 'img/works/work04-2.jpg' },
+      { type: 'image', src: 'img/works/work04-3.jpg' },
+      { type: 'image', src: 'img/works/work04-4.jpg' },
+      { type: 'image', src: 'img/works/work04-5.jpg' },
+    ]
+  },
+  {
+    title: '風呂と心中する',
+    subtitle: 'Going Down with the Bath',
+    cat: 'Short Animation',
+    year: '2020',
+    src: 'img/works/work05-1.jpg',
+    desc: `<div class="modal-credit"><div class="modal-credit-row"><span class="credit-role">Duration</span><span class="credit-name">1:46</span></div><div class="modal-credit-row"><span class="credit-role">Music</span><span class="credit-name">中井萌々香　Momoka Nakai</span></div></div>`,
+    awards: [],
+    media: [
+      { type: 'youtube', src: 'https://youtu.be/qpBgRLhydpE', label: 'YouTubeで見る' },
+      { type: 'image', src: 'img/works/work05-1.jpg' },
+      { type: 'image', src: 'img/works/work05-2.jpg' },
+      { type: 'image', src: 'img/works/work05-3.jpg' },
+      { type: 'image', src: 'img/works/work05-4.jpg' },
+      { type: 'image', src: 'img/works/work05-5.jpg' },
+    ]
+  },
+  {
+    title: '即席麺とおどる',
+    subtitle: 'Dancing with Instant Noodles',
+    cat: 'Short Animation',
+    year: '2020',
+    src: 'img/works/work06-1.jpg',
+    desc: `<div class="modal-credit"><div class="modal-credit-row"><span class="credit-role">Duration</span><span class="credit-name">1:32</span></div></div>`,
+    awards: [],
+    media: [
+      { type: 'youtube', src: 'https://youtu.be/4bZ68Nosprk', label: 'YouTubeで見る' },
+      { type: 'image', src: 'img/works/work06-1.jpg' },
+      { type: 'image', src: 'img/works/work06-2.jpg' },
+      { type: 'image', src: 'img/works/work06-3.jpg' },
+      { type: 'image', src: 'img/works/work06-4.jpg' },
+    ]
+  },
+];
+
+// グリッド生成（サイズ均等・GIF対応）
+const container=document.getElementById('worksBubbles');
+works.forEach((w,i)=>{
+  const bubble=document.createElement('div');
+  bubble.className='work-bubble';
+  bubble.style.transitionDelay=`${i*60}ms`;
+
+  const circle=document.createElement('div');
+  circle.className='bubble-circle';
+  // サイズはCSSのgrid + aspect-ratio で制御するためJS側では不要
+
+  const img=document.createElement('img');
+  img.src=w.src;
+  img.alt=w.title;
+  // GIFはブラウザが自動でアニメーション再生します
+
+  const label=document.createElement('div');
+  label.className='bubble-label';
+  const jaSpan=document.createElement('span');
+  jaSpan.className='bubble-label-ja';
+  jaSpan.textContent=w.title;
+  label.appendChild(jaSpan);
+  if(w.subtitle){
+    const enSpan=document.createElement('span');
+    enSpan.className='bubble-label-en';
+    enSpan.textContent=w.subtitle;
+    label.appendChild(enSpan);
+  }
+
+  circle.appendChild(img);
+  bubble.appendChild(circle);
+  bubble.appendChild(label);
+  bubble.addEventListener('click',()=>openModal(i));
+  container.appendChild(bubble);
+});
+
+// ── スライダー状態 ──
+let sliderIdx = 0;
+let sliderTotal = 0;
+
+function openModal(i) {
+  const w = works[i];
+
+  // media配列 or フォールバック
+  const mediaList = (w.media && w.media.length)
+    ? w.media
+    : [{ type: 'image', src: w.modalSrc || w.src }];
+
+  // 縦並びメディアリストを生成
+  const listEl = document.getElementById('modalMediaList');
+  listEl.innerHTML = '';
+  // 縦画像グリッド対応
+  if (w.portraitGrid) {
+    listEl.classList.add('portrait-grid');
+  } else {
+    listEl.classList.remove('portrait-grid');
+  }
+  mediaList.forEach((m, idx) => {
+    const item = document.createElement('div');
+    item.className = 'modal-media-item';
+    if (m.type === 'youtube') {
+      const ytId = m.src.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/)?.[1] || '';
+      const ytUrl = m.src;
+      const link = document.createElement('a');
+      link.href = ytUrl;
+      link.target = '_blank';
+      link.style.cssText = 'position:absolute;inset:0;display:block;cursor:pointer;';
+      const thumb = document.createElement('img');
+      thumb.src = ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : '';
+      thumb.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(0,0,0,.35);transition:background .2s;';
+      const ytLabel = m.label || 'YouTubeで見る';
+      overlay.innerHTML = '<svg width="64" height="64" viewBox="0 0 24 24" fill="white"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg><span style="font-family:Space Mono,monospace;font-size:11px;letter-spacing:2px;color:#fff;">▶ ' + ytLabel + '</span>';
+      link.onmouseenter = () => overlay.style.background = 'rgba(0,0,0,.55)';
+      link.onmouseleave = () => overlay.style.background = 'rgba(0,0,0,.35)';
+      link.appendChild(thumb);
+      link.appendChild(overlay);
+      item.appendChild(link);
+    } else if (m.type === 'video') {
+      const vid = document.createElement('video');
+      vid.src = m.src;
+      vid.controls = true;
+      vid.preload = 'metadata';
+      if (m.poster) vid.poster = m.poster;
+      item.appendChild(vid);
+    } else {
+      const img = document.createElement('img');
+      img.src = m.src;
+      img.alt = '';
+      item.appendChild(img);
+    }
+    listEl.appendChild(item);
+  });
+
+  // テキスト
+  document.getElementById('modalCat').textContent = w.cat;
+  const titleEl = document.getElementById('modalTitle');
+  titleEl.innerHTML = '';
+  const jaTitle = document.createElement('span');
+  jaTitle.className = 'modal-title-ja';
+  jaTitle.textContent = w.title;
+  titleEl.appendChild(jaTitle);
+  if(w.subtitle){
+    const enTitle = document.createElement('span');
+    enTitle.className = 'modal-title-en';
+    enTitle.textContent = w.subtitle;
+    titleEl.appendChild(enTitle);
+  }
+  document.getElementById('modalDesc').innerHTML  = w.desc;
+  document.getElementById('modalYear').textContent  = w.year;
+
+  const awardsEl = document.getElementById('modalAwards');
+  if (w.awards && w.awards.length) {
+    awardsEl.innerHTML = '<div class="modal-awards-label">Awards</div>' +
+      w.awards.map(a => `<div class="award-item"><span class="award-star">★</span><span>${a}</span></div>`).join('');
+    awardsEl.style.display = 'block';
+  } else {
+    awardsEl.innerHTML = '';
+    awardsEl.style.display = 'none';
+  }
+
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+function closeModal() {
+  document.querySelectorAll('#modalMediaList video').forEach(v => v.pause());
+  // YouTube iframeのsrcを空にして再生停止
+  document.querySelectorAll('#modalMediaList iframe').forEach(f => { f.src = f.src; });
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('.btn-send');
+  btn.textContent='SENT ✓';btn.style.background='var(--blue)';
+  setTimeout(()=>{btn.textContent='SEND →';btn.style.background='';e.target.reset();},3000);
+}
+
+
+// ── ハンバーガーメニュー ──
+function toggleMenu(){
+  const btn  = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  const open = menu.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+// メニュー項目タップ：先に overflow を解除 → メニューを閉じる → ジャンプ
+function menuJump(target){
+  document.body.style.overflow = '';
+  document.getElementById('hamburger').classList.remove('open');
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.remove('open');
+  // transitionが終わってからスクロール（250ms待機）
+  setTimeout(function(){
+    const el = document.querySelector(target);
+    if(el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 260);
+}
+
+// ── ニュースポップアップ ──
+function openNewsModal(el) {
+  const date   = el.querySelector('.news-date').textContent;
+  const title  = el.querySelector('.news-text').textContent;
+  const detail = el.querySelector('.news-detail').innerHTML.replace(/&#10;/g, '<br>');
+  const badgeEl = el.querySelector('.news-badge');
+  const badge  = badgeEl.textContent;
+  const badgeClass = badgeEl.className.replace('news-badge','').trim();
+
+  document.getElementById('newsModalDate').textContent  = date;
+  document.getElementById('newsModalTitle').textContent = title;
+  document.getElementById('newsModalBody').innerHTML    = detail;
+
+  const badgeDom = document.getElementById('newsModalBadge');
+  badgeDom.textContent = badge;
+  badgeDom.className   = 'news-modal-badge ' + badgeClass;
+
+  document.getElementById('newsModalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeNewsModal(e) {
+  if (e && e.target !== document.getElementById('newsModalOverlay') && !e.target.classList.contains('news-modal-close')) return;
+  document.getElementById('newsModalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+</script>
+</body>
+</html>
