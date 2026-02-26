@@ -707,11 +707,18 @@ footer{padding:32px 48px;border-top:1px solid var(--gray-light);display:flex;jus
       <div class="section-title-fallback">Contact<span class="r">.</span></div>
     </div>
     <p class="contact-intro reveal">お仕事のご依頼・コラボレーション・取材など、<br>お気軽にご連絡ください。</p>
-    <form class="contact-form reveal" action="https://formspree.io/f/xwvnyzod" method="POST" onsubmit="handleSubmit(event)">
+    <form class="contact-form reveal" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleSubmit(event)">
+      <!-- Web3Forms -->
+      <input type="hidden" name="access_key" value="9987cee3-3153-4407-b902-7b559c851144">
+      <input type="hidden" name="subject" value="Website Contact (Namitanji)">
+      <input type="hidden" name="from_name" value="Nami Tanji Website">
+      <!-- Bot対策（honeypot） -->
+      <input type="checkbox" name="botcheck" class="hidden" style="display:none">
+
       <input type="text" name="name" placeholder="お名前" required>
       <input type="email" name="email" placeholder="メールアドレス" required>
-      <input type="text" name="subject" placeholder="件名">
-      <textarea name="message" placeholder="メッセージ"></textarea>
+      <input type="text" name="subject_user" placeholder="件名">
+      <textarea name="message" placeholder="メッセージ" required></textarea>
       <button type="submit" class="btn-send">SEND →</button>
     </form>
   </div>
@@ -1038,28 +1045,48 @@ async function handleSubmit(e){
   const form = e.target;
   const btn = form.querySelector('.btn-send');
   const data = new FormData(form);
+
   btn.textContent = 'SENDING...';
   btn.disabled = true;
+
   try {
-    const res = await fetch('https://formspree.io/f/xwvnyzod', {
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
+      body: data
     });
-    if (res.ok) {
+
+    // Web3FormsはJSONレスポンス（success true/false）を返すことが多い
+    let json = null;
+    try { json = await res.json(); } catch(_) {}
+
+    if (res.ok && (!json || json.success)) {
       btn.textContent = 'SENT ✓';
       btn.style.background = 'var(--blue)';
       form.reset();
-      setTimeout(() => { btn.textContent = 'SEND →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+      setTimeout(() => {
+        btn.textContent = 'SEND →';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
     } else {
       btn.textContent = 'ERROR';
       btn.style.background = 'var(--red)';
-      setTimeout(() => { btn.textContent = 'SEND →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+      setTimeout(() => {
+        btn.textContent = 'SEND →';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+      console.error('Web3Forms error:', json);
     }
   } catch(err) {
     btn.textContent = 'ERROR';
     btn.style.background = 'var(--red)';
-    setTimeout(() => { btn.textContent = 'SEND →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+    setTimeout(() => {
+      btn.textContent = 'SEND →';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+    console.error(err);
   }
 }
 
