@@ -708,10 +708,10 @@ footer{padding:32px 48px;border-top:1px solid var(--gray-light);display:flex;jus
     </div>
     <p class="contact-intro reveal">お仕事のご依頼・コラボレーション・取材など、<br>お気軽にご連絡ください。</p>
     <form class="contact-form reveal" action="https://formspree.io/f/xwvnyzod" method="POST" onsubmit="handleSubmit(event)">
-      <input type="text" placeholder="お名前" required>
-      <input type="email" placeholder="メールアドレス" required>
-      <input type="text" placeholder="件名">
-      <textarea placeholder="メッセージ"></textarea>
+      <input type="text" name="name" placeholder="お名前" required>
+      <input type="email" name="email" placeholder="メールアドレス" required>
+      <input type="text" name="subject" placeholder="件名">
+      <textarea name="message" placeholder="メッセージ"></textarea>
       <button type="submit" class="btn-send">SEND →</button>
     </form>
   </div>
