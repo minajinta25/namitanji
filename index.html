@@ -352,6 +352,9 @@ section{padding:100px 48px;}
   transform:scale(.95) translateY(12px);
   transition:transform .25s cubic-bezier(.34,1.2,.64,1);
   position:relative;
+  max-height:80vh;
+  display:flex;
+  flex-direction:column;
 }
 .news-modal-overlay.active .news-modal{transform:scale(1) translateY(0);}
 
@@ -377,6 +380,10 @@ section{padding:100px 48px;}
   color:var(--text-light);
   margin-bottom:24px;
   white-space:pre-wrap;
+  overflow-y:auto;
+  flex:1;
+  max-height:40vh;
+  padding-right:4px;
 }
 .news-modal-close{
   display:block;margin-left:auto;
@@ -678,6 +685,12 @@ footer{padding:32px 48px;border-top:1px solid var(--gray-light);display:flex;jus
     -->
     <div class="news-list reveal">
       <div class="news-item" onclick="openNewsModal(this)">
+        <div class="news-date">2026.03.03</div>
+        <div class="news-text">アジアデジタルアート大賞展Fukuoka　展示のお知らせ</div>
+        <div class="news-badge badge-event">EVENT</div>
+        <div class="news-detail" hidden>私の一年次制作作品「はいいろ　を　つくろう」が学生エンターテインメント部門にて大賞をいただきました、アジアデジタルアート大賞展Fukuoka が3/3より福岡市美術館で開催されております。&#10;&#10;詳しくはアワード公式サイトをご覧ください。&#10;<a href="https://adaa.jp/ja/exhibition/index.html" target="_blank" style="color:var(--blue);">adaa.jp/ja/exhibition/index.html</a></div>
+      </div>
+      <div class="news-item" onclick="openNewsModal(this)">
         <div class="news-date">2026.02.26</div>
         <div class="news-text">サイトを公開しました。</div>
         <div class="news-badge badge-new">NEW</div>
@@ -707,18 +720,11 @@ footer{padding:32px 48px;border-top:1px solid var(--gray-light);display:flex;jus
       <div class="section-title-fallback">Contact<span class="r">.</span></div>
     </div>
     <p class="contact-intro reveal">お仕事のご依頼・コラボレーション・取材など、<br>お気軽にご連絡ください。</p>
-    <form class="contact-form reveal" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleSubmit(event)">
-      <!-- Web3Forms -->
-      <input type="hidden" name="access_key" value="9987cee3-3153-4407-b902-7b559c851144">
-      <input type="hidden" name="subject" value="Website Contact (Namitanji)">
-      <input type="hidden" name="from_name" value="Nami Tanji Website">
-      <!-- Bot対策（honeypot） -->
-      <input type="checkbox" name="botcheck" class="hidden" style="display:none">
-
+    <form class="contact-form reveal" action="https://formspree.io/f/xwvnyzod" method="POST" onsubmit="handleSubmit(event)">
       <input type="text" name="name" placeholder="お名前" required>
       <input type="email" name="email" placeholder="メールアドレス" required>
-      <input type="text" name="subject_user" placeholder="件名">
-      <textarea name="message" placeholder="メッセージ" required></textarea>
+      <input type="text" name="subject" placeholder="件名">
+      <textarea name="message" placeholder="メッセージ"></textarea>
       <button type="submit" class="btn-send">SEND →</button>
     </form>
   </div>
@@ -1045,48 +1051,28 @@ async function handleSubmit(e){
   const form = e.target;
   const btn = form.querySelector('.btn-send');
   const data = new FormData(form);
-
   btn.textContent = 'SENDING...';
   btn.disabled = true;
-
   try {
-    const res = await fetch('https://api.web3forms.com/submit', {
+    const res = await fetch('https://formspree.io/f/xwvnyzod', {
       method: 'POST',
-      body: data
+      body: data,
+      headers: { 'Accept': 'application/json' }
     });
-
-    // Web3FormsはJSONレスポンス（success true/false）を返すことが多い
-    let json = null;
-    try { json = await res.json(); } catch(_) {}
-
-    if (res.ok && (!json || json.success)) {
+    if (res.ok) {
       btn.textContent = 'SENT ✓';
       btn.style.background = 'var(--blue)';
       form.reset();
-      setTimeout(() => {
-        btn.textContent = 'SEND →';
-        btn.style.background = '';
-        btn.disabled = false;
-      }, 3000);
+      setTimeout(() => { btn.textContent = 'SEND →'; btn.style.background = ''; btn.disabled = false; }, 3000);
     } else {
       btn.textContent = 'ERROR';
       btn.style.background = 'var(--red)';
-      setTimeout(() => {
-        btn.textContent = 'SEND →';
-        btn.style.background = '';
-        btn.disabled = false;
-      }, 3000);
-      console.error('Web3Forms error:', json);
+      setTimeout(() => { btn.textContent = 'SEND →'; btn.style.background = ''; btn.disabled = false; }, 3000);
     }
   } catch(err) {
     btn.textContent = 'ERROR';
     btn.style.background = 'var(--red)';
-    setTimeout(() => {
-      btn.textContent = 'SEND →';
-      btn.style.background = '';
-      btn.disabled = false;
-    }, 3000);
-    console.error(err);
+    setTimeout(() => { btn.textContent = 'SEND →'; btn.style.background = ''; btn.disabled = false; }, 3000);
   }
 }
 
